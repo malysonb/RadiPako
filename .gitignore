@@ -1,6 +1,6 @@
-./*.exe
-./*.dll
-./*.rc
+*.exe
+*.dll
+*.rc
 ./RadiPakoLib/*.exe
 ./RadiPakoLib/*.dll
 ./RadiPakoLib/RadiPako.o
