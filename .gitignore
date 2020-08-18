@@ -1,0 +1,11 @@
+./*.exe
+./*.dll
+./*.rc
+./RadiPakoLib/*.exe
+./RadiPakoLib/*.dll
+./RadiPakoLib/RadiPako.o
+./RadiPakoLib/*.a
+./RadiPakoLib/*.def
+./RadiPakoLib/*.rc
+.vscode
+.vscode/*
