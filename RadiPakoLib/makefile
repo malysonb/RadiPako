@@ -4,4 +4,4 @@ default:
 
 default_x64:
 	gcc RadiPako.c -c
-	gcc RadiPako.o -shared -s -O2 -o libRPK.dll libinfo.o
+	gcc RadiPako.o -shared -s -O2 -o libRPK.dll libinfo_x64.o
