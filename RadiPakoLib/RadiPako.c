@@ -12,7 +12,9 @@
 #include <string.h>
 #include <math.h>
 
-char Version[4] = {1, 0, 0, 0};
+char* VersionString = "RadiPako v1.1";
+
+char Version[4] = {1, 0, 1, 0};
 const int FirstFileAddress = 0x10;
 
 long totalsize = 0;
@@ -204,7 +206,7 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
         files[i] = malloc(sizeof(Content));
         char *filename = va_arg(valist, char *);
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = (char *)malloc(len * sizeof(char));
+        files[i]->nameOfTheFile = (char *)malloc(256 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);
@@ -227,7 +229,7 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
         files[i] = malloc(sizeof(Content));
         char *filename = filepath[i];
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = (char *)malloc(len * sizeof(char));
+        files[i]->nameOfTheFile = (char *)malloc(256 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);

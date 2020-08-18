@@ -6,9 +6,9 @@
   */
 #pragma once
 
-#define VersionString "RadiPako 1.0"
-
 typedef struct Rpk RpkFile;
+
+extern char* VersionString;
 
 extern int RPK_filesize;
 
