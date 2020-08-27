@@ -12,9 +12,9 @@
 #include <string.h>
 #include <math.h>
 
-char* VersionString = "RadiPako v1.1";
+char* VersionString = "RadiPako v1.1.2";
 
-char Version[4] = {1, 0, 1, 0};
+char Version[4] = {1, 1, 2, 0};
 const int FirstFileAddress = 0x10;
 
 long totalsize = 0;
