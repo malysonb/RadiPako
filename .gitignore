@@ -11,3 +11,5 @@
 .vscode/*
 Release/32bit/*
 Release/64bit/*
+Release/LICENSE
+Release/*.txt

@@ -12,9 +12,9 @@
 #include <string.h>
 #include <math.h>
 
-char* VersionString = "RadiPako v1.1.2";
+char* VersionString = "RadiPako v1.2.0";
 
-char Version[4] = {1, 1, 2, 0};
+char Version[4] = {1, 2, 0, 0};
 const int FirstFileAddress = 0x10;
 
 long totalsize = 0;
@@ -28,7 +28,7 @@ union AddressType {
 typedef struct ContentType
 {
     int sizeOfTheFile;
-    char *nameOfTheFile;
+    char nameOfTheFile[260];
     unsigned char *allContent;
 } Content;
 
@@ -206,7 +206,6 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
         files[i] = malloc(sizeof(Content));
         char *filename = va_arg(valist, char *);
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = malloc(260 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);
@@ -229,7 +228,6 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
         files[i] = malloc(sizeof(Content));
         char *filename = filepath[i];
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = malloc(260 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);

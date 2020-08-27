@@ -22,8 +22,6 @@ int main(int argc, char const *argv[])
                 switch (argv[i][1])
                 {
                 case 'o':
-                    length = strlen(argv[i + 1]);
-                    //dest = malloc((length+1));
                     strcpy(dest, argv[i + 1]);
                     notScan = i + 1;
                     success = 0;
@@ -36,8 +34,6 @@ int main(int argc, char const *argv[])
             {
                 if (i != notScan)
                 {
-                    int len = strlen(argv[i]);
-                    //paths[iterator] = malloc(512);
                     strcpy(paths[iterator], argv[i]);
                     iterator++;
                 }
@@ -52,12 +48,9 @@ int main(int argc, char const *argv[])
     char **pathsToUse = malloc(iterator);
     for (int j = 0; j < iterator; j++)
     {
-        pathsToUse[j] = malloc(260);
-        strcpy(pathsToUse[j], paths[j]);
+        pathsToUse[j] = strdup(paths[j]);
     }
-    printf("Ready to archive!\n");
     RPK_JointFiles(iterator, pathsToUse);
-    printf("the files is all together!\n");
     if (success == 0)
     {
         if (dest != NULL)
