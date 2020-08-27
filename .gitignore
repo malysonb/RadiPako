@@ -9,5 +9,5 @@
 ./RadiPakoLib/*.rc
 .vscode
 .vscode/*
-Release/
-Release/*
+Release/32bit/*
+Release/64bit/*
