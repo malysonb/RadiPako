@@ -12,9 +12,9 @@
 #include <string.h>
 #include <math.h>
 
-char* VersionString = "RadiPako v1.2.0";
+char *VersionString = "RadiPako v1.2.0.1";
 
-char Version[4] = {1, 2, 0, 0};
+char Version[4] = {1, 2, 0, 1};
 const int FirstFileAddress = 0x10;
 
 long totalsize = 0;
@@ -28,7 +28,7 @@ union AddressType {
 typedef struct ContentType
 {
     int sizeOfTheFile;
-    char nameOfTheFile[260];
+    char *nameOfTheFile;
     unsigned char *allContent;
 } Content;
 
@@ -206,8 +206,14 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
         files[i] = malloc(sizeof(Content));
         char *filename = va_arg(valist, char *);
         int len = strlen(filename) + 1;
+        files[i]->nameOfTheFile = (char *)malloc(sizeof(char) * 260);
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
+        if (tempfile == NULL)
+        {
+            printf("This file do not exist!\n");
+            return 0;
+        }
         fseek(tempfile, 0L, SEEK_END);
         int size = ftell(tempfile);
         fseek(tempfile, 0L, SEEK_SET);
@@ -227,9 +233,16 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
     {
         files[i] = malloc(sizeof(Content));
         char *filename = filepath[i];
+        printf("iterator: %d - %s\n", i, filepath[i]);
         int len = strlen(filename) + 1;
-        strcpy(files[i]->nameOfTheFile, filename);
-        FILE *tempfile = fopen(filename, "rb");
+        files[i]->nameOfTheFile = (char *)malloc(sizeof(char) * 260);
+        strcpy(files[i]->nameOfTheFile, filepath[i]);
+        FILE *tempfile = fopen(filepath[i], "rb");
+        if (tempfile == NULL)
+        {
+            printf("This file do not exist!\n");
+            return 0;
+        }
         fseek(tempfile, 0L, SEEK_END);
         int size = ftell(tempfile);
         fseek(tempfile, 0L, SEEK_SET);
@@ -240,4 +253,5 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
         files[i]->sizeOfTheFile = size + strlen(files[i]->nameOfTheFile);
     }
     RPK_CreatePackage(numberoffiles);
+    return 1;
 }

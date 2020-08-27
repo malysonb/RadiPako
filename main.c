@@ -8,7 +8,8 @@ int main(int argc, char const *argv[])
     printf("%s\n", VersionString);
     int notScan = -1;
     char dest[260];
-    char paths [argc][260];
+    //char paths [argc][260];
+    char **paths = malloc(argc);
     int iterator = 0;
     int length = 0;
     int success = -1;
@@ -34,7 +35,8 @@ int main(int argc, char const *argv[])
             {
                 if (i != notScan)
                 {
-                    strcpy(paths[iterator], argv[i]);
+                    //strcpy(paths[iterator], argv[i]);
+                    paths[iterator] = strdup(argv[i]);
                     iterator++;
                 }
             }
@@ -45,13 +47,7 @@ int main(int argc, char const *argv[])
             return 0;
         }
     }
-    char **pathsToUse = malloc(iterator);
-    for (int j = 0; j < iterator; j++)
-    {
-        pathsToUse[j] = strdup(paths[j]);
-    }
-    RPK_JointFiles(iterator, pathsToUse);
-    if (success == 0)
+    if (RPK_JointFiles(iterator, paths))
     {
         if (dest != NULL)
         {
