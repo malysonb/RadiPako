@@ -206,7 +206,7 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
         files[i] = malloc(sizeof(Content));
         char *filename = va_arg(valist, char *);
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = (char *)malloc(256 * sizeof(char));
+        files[i]->nameOfTheFile = malloc(260 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);
@@ -229,7 +229,7 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
         files[i] = malloc(sizeof(Content));
         char *filename = filepath[i];
         int len = strlen(filename) + 1;
-        files[i]->nameOfTheFile = (char *)malloc(256 * sizeof(char));
+        files[i]->nameOfTheFile = malloc(260 * sizeof(char));
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
         fseek(tempfile, 0L, SEEK_END);

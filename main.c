@@ -7,8 +7,8 @@ int main(int argc, char const *argv[])
 {
     printf("%s\n", VersionString);
     int notScan = -1;
-    char *dest = NULL;
-    char **paths = malloc(argc * sizeof(char));
+    char dest[260];
+    char paths [argc][260];
     int iterator = 0;
     int length = 0;
     int success = -1;
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
                 {
                 case 'o':
                     length = strlen(argv[i + 1]);
-                    dest = malloc(length * sizeof(char));
+                    //dest = malloc((length+1));
                     strcpy(dest, argv[i + 1]);
                     notScan = i + 1;
                     success = 0;
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
                 if (i != notScan)
                 {
                     int len = strlen(argv[i]);
-                    paths[iterator] = malloc(256 * sizeof(char));
+                    //paths[iterator] = malloc(512);
                     strcpy(paths[iterator], argv[i]);
                     iterator++;
                 }
@@ -49,14 +49,14 @@ int main(int argc, char const *argv[])
             return 0;
         }
     }
-    /*char **pathsToUse = malloc(iterator);
+    char **pathsToUse = malloc(iterator);
     for (int j = 0; j < iterator; j++)
     {
-        pathsToUse[j] = malloc(sizeof(paths[j]));
+        pathsToUse[j] = malloc(260);
         strcpy(pathsToUse[j], paths[j]);
-    }*/
+    }
     printf("Ready to archive!\n");
-    RPK_JointFiles(iterator, paths);
+    RPK_JointFiles(iterator, pathsToUse);
     printf("the files is all together!\n");
     if (success == 0)
     {
