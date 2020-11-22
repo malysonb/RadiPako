@@ -12,19 +12,27 @@
 #include <string.h>
 #include <math.h>
 
-char *VersionString = "RadiPako v1.2.1.1";
+char *VersionString = "RadiPako v1.2.2.1";
 
-char Version[4] = {1, 2, 1, 1};
+const char Version[4] = {1, 2, 2, 1};
 const int FirstFileAddress = 0x10;
 
 long totalsize = 0;
 int RPK_filesize = 0;
 
+/**
+ * @brief 
+ * Iterator for a RPK file
+ */
 union AddressType {
     int integer;
     char bytes[4];
 } Address;
 
+/**
+ * @brief 
+ * Content of a RPK file.
+ */
 typedef struct ContentType
 {
     int sizeOfTheFile;
@@ -32,6 +40,10 @@ typedef struct ContentType
     unsigned char *allContent;
 } Content;
 
+/**
+ * @brief 
+ * RPK File header struct
+ */
 typedef struct Rpk
 {
     char MagicNumber[4];
@@ -72,7 +84,7 @@ unsigned char *RPK_GetFile_Uchar(const char *RPKpath, const char *Filename)
                 iterator++;
             }
             thisfile[ci] = '\0';
-            if (strcmp(Filename, thisfile) == 0)
+            if (strcmp(Filename, (char *)thisfile) == 0)
             {
                 iterator++;
                 int realsize = end - ci;
@@ -177,7 +189,7 @@ int RPK_CreateFile(const char *path)
         fwrite("\0", sizeof(char), 1, myContent);
     }
     fclose(myfile);
-    return 0;
+    return 1;
 }
 
 int RPK_CreatePackage(int nOfFiles)
@@ -193,7 +205,7 @@ int RPK_CreatePackage(int nOfFiles)
     temp->FileVersion[2] = Version[2];
     temp->FileVersion[3] = Version[3];
     temp->NumberOfFiles = nOfFiles;
-    return 0;
+    return 1;
 }
 
 int RPK_JointALotOfFiles(int numberoffiles, ...)
@@ -205,7 +217,6 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
     {
         files[i] = malloc(sizeof(Content));
         char *filename = va_arg(valist, char *);
-        int len = strlen(filename) + 1;
         files[i]->nameOfTheFile = (char *)malloc(sizeof(char) * 260);
         strcpy(files[i]->nameOfTheFile, filename);
         FILE *tempfile = fopen(filename, "rb");
@@ -224,6 +235,7 @@ int RPK_JointALotOfFiles(int numberoffiles, ...)
         files[i]->sizeOfTheFile = size + strlen(files[i]->nameOfTheFile);
     }
     RPK_CreatePackage(numberoffiles);
+    return 1;
 }
 
 int RPK_JointFiles(int numberoffiles, char **filepath)
@@ -232,15 +244,13 @@ int RPK_JointFiles(int numberoffiles, char **filepath)
     for (int i = 0; i < numberoffiles; i++)
     {
         files[i] = malloc(sizeof(Content));
-        char *filename = filepath[i];
-        printf("iterator: %d - %s\n", i, filepath[i]);
-        int len = strlen(filename) + 1;
+        //printf("iterator: %d - %s\n", i, filepath[i]);
         files[i]->nameOfTheFile = (char *)malloc(sizeof(char) * 260);
         strcpy(files[i]->nameOfTheFile, filepath[i]);
         FILE *tempfile = fopen(filepath[i], "rb");
         if (tempfile == NULL)
         {
-            printf("This file do not exist!\n");
+            //printf("This file do not exist!\n");
             return 0;
         }
         fseek(tempfile, 0L, SEEK_END);

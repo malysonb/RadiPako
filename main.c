@@ -11,8 +11,6 @@ int main(int argc, char const *argv[])
     //char paths [argc][260];
     char **paths = malloc(argc);
     int iterator = 0;
-    int length = 0;
-    int success = -1;
     printf("%d arguments!\n", argc - 1);
     for (int i = 1; i < argc; i++)
     {
@@ -25,7 +23,6 @@ int main(int argc, char const *argv[])
                 case 'o':
                     strcpy(dest, argv[i + 1]);
                     notScan = i + 1;
-                    success = 0;
                     break;
                 default:
                     break;
