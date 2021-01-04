@@ -1,4 +1,4 @@
 default:
-	gcc main.c -s -O2 ./RadiPakoLib/*.c -o RadiPako -Wall 
-	cd ./RadiPakoLib/ && \
+	gcc main.c -s -O2 ./src/*.cpp -o RadiPako -Wall 
+	cd ./src/ && \
 	make default
