@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <filesystem>
 
 const char *RadiPako::VersionString() { return "RadiPako 2.0.0.0"; }
 const char VB[4] = {2, 0, 0, 0};
@@ -180,22 +181,24 @@ RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
             return nullptr;
         }
         temp->name = filepath[i];
-        stream.seekg(0, std::ios_base::beg);
-        stream.seekg(0, std::ios_base::end);
-        temp->size = stream.tellg();
+        stream.ignore(std::numeric_limits<std::streamsize>::max());
+        std::streamsize length = stream.gcount();
+        temp->size = length;
         stream.clear();
         stream.seekg(0, std::ios_base::beg);
         temp->content = new unsigned char[temp->size];
-        stream.read((char *)temp->content, temp->size);
+        stream.read((char *)temp->content, length);
         rpk_f->Files.push_back(temp);
-        rpk_f->size += temp->size;
+        rpk_f->size += temp->size + temp->name.length();
         rpk_f->NumOfFiles++;
-        rpk_f->Version[0] = VB[0];
-        rpk_f->Version[1] = VB[1];
-        rpk_f->Version[2] = VB[2];
-        rpk_f->Version[3] = VB[3];
         stream.close();
     }
+    rpk_f->size += (sizeof(int)*rpk_f->NumOfFiles);
+    rpk_f->size += rpk_f->NumOfFiles*1;
+    rpk_f->Version[0] = VB[0];
+    rpk_f->Version[1] = VB[1];
+    rpk_f->Version[2] = VB[2];
+    rpk_f->Version[3] = VB[3];
     return rpk_f;
 }
 
@@ -205,7 +208,7 @@ int RadiPako::CreateFile(RPK *rpk_file, const char *path)
     {
         return 0;
     }
-    std::ofstream stream(path, std::ios_base::ate);
+    std::ofstream stream(path, std::ios_base::binary | std::ios_base::ate);
     stream.write(rpk_file->MagicNumber, 4);
     stream.write(ConvertToByte(rpk_file->size), 4);
     stream.write(rpk_file->Version, 4);
@@ -218,6 +221,7 @@ int RadiPako::CreateFile(RPK *rpk_file, const char *path)
         stream.write(file->name.c_str(), file->name.length());
         stream << '\0';
         stream.write((char *)file->content, file->size);
+        //stream << file->content;
     }
     stream.close();
     return 1;

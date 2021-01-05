@@ -3,13 +3,6 @@
 #include <string>
 #include <vector>
 
-/*int main(int argc, char const *argv[])
-{
-    RPK *teste = RadiPako::LoadRPKFile("./teste.rpk");
-    std::cout << RadiPako::GetFile_Content(teste, "makefile");
-    return 0;
-}*/
-
 int main(int argc, char const *argv[])
 {
     int skip = -1;
