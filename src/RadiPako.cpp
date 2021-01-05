@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <limits>
 
 const char *RadiPako::VersionString() { return "RadiPako 2.0.0.0"; }
 const char VB[4] = {2, 0, 0, 0};
@@ -179,8 +180,10 @@ RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
             return nullptr;
         }
         temp->name = filepath[i];
+        stream.seekg(0, std::ios_base::beg);
         stream.seekg(0, std::ios_base::end);
         temp->size = stream.tellg();
+        stream.clear();
         stream.seekg(0, std::ios_base::beg);
         temp->content = new unsigned char[temp->size];
         stream.read((char *)temp->content, temp->size);
@@ -198,6 +201,10 @@ RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
 
 int RadiPako::CreateFile(RPK *rpk_file, const char *path)
 {
+    if (rpk_file == nullptr)
+    {
+        return 0;
+    }
     std::ofstream stream(path, std::ios_base::ate);
     stream.write(rpk_file->MagicNumber, 4);
     stream.write(ConvertToByte(rpk_file->size), 4);
