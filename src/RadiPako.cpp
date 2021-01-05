@@ -11,23 +11,29 @@ const char VB[4] = {2, 0, 0, 0};
 
 const int startByte = 0x10;
 
-struct File
+RadiPako::RPK::~RPK()
 {
-public:
-    int size = 0;
-    std::string name;
-    unsigned char *content;
-};
+    Dispose();
+}
 
-class RPK
+void RadiPako::RPK::Dispose()
 {
-public:
-    const char *MagicNumber = "RPKO";
-    int size = 0;
-    char Version[4];
-    int NumOfFiles = 0;
-    std::vector<File *> Files;
-};
+    for (int i = 0; i < Files.size(); i++)
+    {
+        delete Files[i];
+    }
+    Files.clear();
+}
+
+RadiPako::RPK_File::~RPK_File()
+{
+    delete RPK_File::content;
+}
+
+int RadiPako::RPK_File::getSize()
+{
+    return abs(this->getSize() - (this->name.length()+1));
+}
 
 char *ConvertToByte(int value)
 {
@@ -60,7 +66,7 @@ int ConvertToint(char *value)
     return temp;
 }
 
-File *RadiPako::GetFile(RPK *File, const char *Filename)
+RadiPako::RPK_File *RadiPako::GetFile(RPK *File, const char *Filename)
 {
     for (int i = 0; i < File->NumOfFiles; i++)
     {
@@ -90,19 +96,15 @@ char *RadiPako::GetFile_Content(RPK *File, const char *Filename)
     return nullptr;
 }
 
-char *RadiPako::GetFile_Content(File *File, const char *Filename)
+char *RadiPako::GetFile_Content(RPK_File *File)
 {
-    if (File->name == Filename)
+    int size = abs((File->name.length() + 1) - File->size);
+    char *ret = new char[size];
+    for (int x = 0; x < size; x++)
     {
-        int size = abs((File->name.length() + 1) - File->size);
-        char *ret = new char[size];
-        for (int x = 0; x < size; x++)
-        {
-            ret[x] = File->content[x];
-        }
-        return ret;
+        ret[x] = File->content[x];
     }
-    return nullptr;
+    return ret;
 }
 
 unsigned char *RadiPako::GetFile_Content_Uchar(RPK *File, const char *Filename)
@@ -123,27 +125,23 @@ unsigned char *RadiPako::GetFile_Content_Uchar(RPK *File, const char *Filename)
     return nullptr;
 }
 
-unsigned char *RadiPako::GetFile_Content_Uchar(File *File, const char *Filename)
+unsigned char *RadiPako::GetFile_Content_Uchar(RPK_File *File)
 {
-    if (File->name == Filename)
+    int size = abs((File->name.length() + 1) - File->size);
+    unsigned char *ret = new unsigned char[size];
+    for (int x = 0; x < size; x++)
     {
-        int size = abs((File->name.length() + 1) - File->size);
-        unsigned char *ret = new unsigned char[size];
-        for (int x = 0; x < size; x++)
-        {
-            ret[x] = File->content[x];
-        }
-        return ret;
+        ret[x] = File->content[x];
     }
-    return nullptr;
+    return ret;
 }
 
-RPK *RadiPako::JointFiles(int numberoffiles, char **filepath)
+RadiPako::RPK *RadiPako::JointFiles(int numberoffiles, char **filepath)
 {
     RPK *rpk_f = new RPK();
     for (int i = 0; i < numberoffiles; i++)
     {
-        File *temp = new File;
+        RPK_File *temp = new RPK_File;
         std::ifstream stream(filepath[i], std::ios_base::binary);
         if (!stream.good())
         {
@@ -168,12 +166,12 @@ RPK *RadiPako::JointFiles(int numberoffiles, char **filepath)
     return rpk_f;
 }
 
-RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
+RadiPako::RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
 {
     RPK *rpk_f = new RPK();
     for (int i = 0; i < numberoffiles; i++)
     {
-        File *temp = new File;
+        RPK_File *temp = new RPK_File;
         std::ifstream stream(filepath[i], std::ios_base::binary);
         if (!stream.good())
         {
@@ -193,8 +191,8 @@ RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> filepath)
         rpk_f->NumOfFiles++;
         stream.close();
     }
-    rpk_f->size += (sizeof(int)*rpk_f->NumOfFiles);
-    rpk_f->size += rpk_f->NumOfFiles*1;
+    rpk_f->size += (sizeof(int) * rpk_f->NumOfFiles);
+    rpk_f->size += rpk_f->NumOfFiles * 1;
     rpk_f->Version[0] = VB[0];
     rpk_f->Version[1] = VB[1];
     rpk_f->Version[2] = VB[2];
@@ -215,7 +213,7 @@ int RadiPako::CreateFile(RPK *rpk_file, const char *path)
     stream.write(ConvertToByte(rpk_file->NumOfFiles), 4);
     for (int i = 0; i < rpk_file->NumOfFiles; i++)
     {
-        File *file = rpk_file->Files[i];
+        RPK_File *file = rpk_file->Files[i];
         int size = file->size + file->name.length() + 1;
         stream.write(ConvertToByte(size), 4);
         stream.write(file->name.c_str(), file->name.length());
@@ -227,7 +225,7 @@ int RadiPako::CreateFile(RPK *rpk_file, const char *path)
     return 1;
 }
 
-RPK *RadiPako::LoadRPKFile(const char *path)
+RadiPako::RPK *RadiPako::LoadRPKFile(const char *path)
 {
     std::ifstream stream(path, std::ios_base::binary);
     if (!stream.good())
@@ -247,7 +245,7 @@ RPK *RadiPako::LoadRPKFile(const char *path)
     stream.seekg(startByte);
     for (int i = 0; i < temp->NumOfFiles; i++)
     {
-        File *file = new File();
+        RPK_File *file = new RPK_File();
         stream.read(bytes, 4);
         file->size = ConvertToint(bytes);
         char c;

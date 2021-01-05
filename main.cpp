@@ -5,6 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
+    std::cout << "RadiPako " << RadiPako::VersionString() << std::endl;
     int skip = -1;
     int it = 0;
     std::string dest;
