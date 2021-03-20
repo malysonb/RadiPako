@@ -32,7 +32,7 @@ RadiPako::RPK_File::~RPK_File()
 
 int RadiPako::RPK_File::getSize()
 {
-    return abs(this->getSize() - (this->name.length()+1));
+    return abs(this->size - (this->name.length()+1));;
 }
 
 char *ConvertToByte(int value)
