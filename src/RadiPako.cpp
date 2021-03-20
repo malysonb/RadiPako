@@ -1,5 +1,5 @@
 #include <iostream>
-#include "RadiPako.hpp"
+#include "../include/RadiPako.hpp"
 #include <fstream>
 #include <vector>
 #include <string>

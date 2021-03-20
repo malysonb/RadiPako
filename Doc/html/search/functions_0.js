@@ -1,9 +1,0 @@
-var searchData=
-[
-  ['rpk_5fcreatefile_19',['RPK_CreateFile',['../_radi_pako_8c.html#a31247bc4f8811795c9f9256d3967464e',1,'RPK_CreateFile(const char *path):&#160;RadiPako.c'],['../_radi_pako_8h.html#a31247bc4f8811795c9f9256d3967464e',1,'RPK_CreateFile(const char *path):&#160;RadiPako.c']]],
-  ['rpk_5fcreatepackage_20',['RPK_CreatePackage',['../_radi_pako_8c.html#a38eefb4f1c51dedc17b7951275ec9925',1,'RPK_CreatePackage(int nOfFiles):&#160;RadiPako.c'],['../_radi_pako_8h.html#a38eefb4f1c51dedc17b7951275ec9925',1,'RPK_CreatePackage(int nOfFiles):&#160;RadiPako.c']]],
-  ['rpk_5fgetfile_21',['RPK_GetFile',['../_radi_pako_8c.html#ace75419db7f06c47eb53d51a1b3cdbdf',1,'RPK_GetFile(const char *RPKpath, const char *Filename):&#160;RadiPako.c'],['../_radi_pako_8h.html#ace75419db7f06c47eb53d51a1b3cdbdf',1,'RPK_GetFile(const char *RPKpath, const char *Filename):&#160;RadiPako.c']]],
-  ['rpk_5fgetfile_5fuchar_22',['RPK_GetFile_Uchar',['../_radi_pako_8c.html#ac80938bf3221c56ff47502d6a73c8a65',1,'RPK_GetFile_Uchar(const char *RPKpath, const char *Filename):&#160;RadiPako.c'],['../_radi_pako_8h.html#ac80938bf3221c56ff47502d6a73c8a65',1,'RPK_GetFile_Uchar(const char *RPKpath, const char *Filename):&#160;RadiPako.c']]],
-  ['rpk_5fjointalotoffiles_23',['RPK_JointALotOfFiles',['../_radi_pako_8c.html#a7b1ad5a02b0a95b3e56a2e3aef22e7f5',1,'RPK_JointALotOfFiles(int numberoffiles,...):&#160;RadiPako.c'],['../_radi_pako_8h.html#a7b1ad5a02b0a95b3e56a2e3aef22e7f5',1,'RPK_JointALotOfFiles(int numberoffiles,...):&#160;RadiPako.c']]],
-  ['rpk_5fjointfiles_24',['RPK_JointFiles',['../_radi_pako_8c.html#a539658def69e38b93915d48977b31d7b',1,'RPK_JointFiles(int numberoffiles, char **filepath):&#160;RadiPako.c'],['../_radi_pako_8h.html#a539658def69e38b93915d48977b31d7b',1,'RPK_JointFiles(int numberoffiles, char **filepath):&#160;RadiPako.c']]]
-];
