@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/RadiPako.hpp"
+#include <cstdlib>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -8,6 +9,14 @@
 
 const char *RadiPako::VersionString() { return "RadiPako 2.0.0.0"; }
 const char VB[4] = {2, 0, 0, 0};
+
+int mod(int num)
+{
+    if(num < 0)
+        return num * -1;
+    else
+        return num;
+}
 
 const int startByte = 0x10;
 
@@ -32,7 +41,7 @@ RadiPako::RPK_File::~RPK_File()
 
 int RadiPako::RPK_File::getSize()
 {
-    return abs(this->size - (this->name.length()+1));;
+    return mod(this->size - (this->name.length()+1));
 }
 
 char *ConvertToByte(int value)
@@ -84,7 +93,7 @@ char *RadiPako::GetFile_Content(RPK *File, const char *Filename)
     {
         if (File->Files[i]->name == Filename)
         {
-            int size = abs((File->Files[i]->name.length() + 1) - File->Files[i]->size);
+            int size = mod((File->Files[i]->name.length() + 1) - File->Files[i]->size);
             char *ret = new char[size];
             for (int x = 0; x < size; x++)
             {
@@ -98,7 +107,7 @@ char *RadiPako::GetFile_Content(RPK *File, const char *Filename)
 
 char *RadiPako::GetFile_Content(RPK_File *File)
 {
-    int size = abs((File->name.length() + 1) - File->size);
+    int size = mod((File->name.length() + 1) - File->size);
     char *ret = new char[size];
     for (int x = 0; x < size; x++)
     {
@@ -113,7 +122,7 @@ unsigned char *RadiPako::GetFile_Content_Uchar(RPK *File, const char *Filename)
     {
         if (File->Files[i]->name == Filename)
         {
-            int size = abs((File->Files[i]->name.length() + 1) - File->Files[i]->size);
+            int size = mod((File->Files[i]->name.length() + 1) - File->Files[i]->size);
             unsigned char *ret = new unsigned char[size];
             for (int x = 0; x < size; x++)
             {
@@ -127,7 +136,7 @@ unsigned char *RadiPako::GetFile_Content_Uchar(RPK *File, const char *Filename)
 
 unsigned char *RadiPako::GetFile_Content_Uchar(RPK_File *File)
 {
-    int size = abs((File->name.length() + 1) - File->size);
+    int size = mod((File->name.length() + 1) - File->size);
     unsigned char *ret = new unsigned char[size];
     for (int x = 0; x < size; x++)
     {
@@ -254,7 +263,7 @@ RadiPako::RPK *RadiPako::LoadRPKFile(const char *path)
             file->name += c;
         }
         //stream.seekg(file->name.length(), std::ios_base::cur);
-        int size = abs((file->name.length() + 1) - file->size);
+        int size = mod((file->name.length() + 1) - file->size);
         file->content = new unsigned char[size];
         for (int i = 0; i < size; i++)
         {
