@@ -27,7 +27,7 @@ RadiPako::RPK::~RPK()
 
 void RadiPako::RPK::Dispose()
 {
-    for (int i = 0; i < Files.size(); i++)
+    for (int i = 0; i < (int)Files.size(); i++)
     {
         delete Files[i];
     }
@@ -159,7 +159,7 @@ RadiPako::RPK *RadiPako::JointFiles(int numberoffiles, char **filepath)
         }
         temp->name = filepath[i];
         stream.seekg(0, std::ios_base::end);
-        temp->size = stream.tellg();
+        temp->size = (int)stream.tellg();
         stream.seekg(0, std::ios_base::beg);
         temp->content = new unsigned char[temp->size];
         stream.read((char *)temp->content, temp->size);
@@ -190,7 +190,7 @@ RadiPako::RPK *RadiPako::JointFiles(int numberoffiles, std::vector<std::string> 
         temp->name = filepath[i];
         stream.ignore(std::numeric_limits<std::streamsize>::max());
         std::streamsize length = stream.gcount();
-        temp->size = length;
+        temp->size = (int)length;
         stream.clear();
         stream.seekg(0, std::ios_base::beg);
         temp->content = new unsigned char[temp->size];
